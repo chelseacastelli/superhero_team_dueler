@@ -24,13 +24,22 @@ class Armor:
 class Hero:
     def __init__(self, name, current_health):
         self.name = name
-        self.abilities = []
-        self.armors = []
+        self.abilities = list()
+        self.armors = list()
         self.starting_health = 100
         self.current_health = current_health
 
     def add_ability(self, ability):
         self.abilities.append(ability)
+
+    def attack(self):
+        total = 0
+
+        for ability in self.abilities:
+            total += ability.attack()
+
+        return total
+
 
 #
 # if __name__ == "__main__":
@@ -47,11 +56,19 @@ class Hero:
 #     hero = Hero("Grace Hopper", 200)
 #     print(hero.name)
 #     print(hero.current_health)
+#
+# if __name__ == "__main__":
+#     ability = Ability("Great Debugging", 50)
+#     another_ability = Ability("Flying", 70)
+#     hero = Hero("Grace Hopper", 200)
+#     hero.add_ability(ability)
+#     hero.add_ability(another_ability)
+#     print(hero.abilities)
 
 if __name__ == "__main__":
     ability = Ability("Great Debugging", 50)
-    another_ability = Ability("Flying", 70)
+    another_ability = Ability("Smarty Pants", 90)
     hero = Hero("Grace Hopper", 200)
     hero.add_ability(ability)
     hero.add_ability(another_ability)
-    print(hero.abilities)
+    print(hero.attack())
