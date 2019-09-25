@@ -1,5 +1,5 @@
-
 import random
+
 
 class Ability:
     def __init__(self, name, max_damage):
@@ -21,11 +21,26 @@ class Armor:
         return random.randint(0, self.max_block)
 
 
+class Hero:
+    def __init__(self, name, current_health):
+        self.name = name
+        self.abilities = []
+        self.armors = []
+        self.starting_health = 100
+        self.current_health = current_health
+        
+
 if __name__ == "__main__":
     ability = Ability("Debugging Ability", 20)
     print(ability.name)
     print(ability.attack())
 
+if __name__ == "__main__":
     armor = Armor("Shield", 12)
     print(armor.name)
     print(armor.block())
+
+if __name__ == "__main__":
+    hero = Hero("Grace Hopper", 200)
+    print(hero.name)
+    print(hero.current_health)
