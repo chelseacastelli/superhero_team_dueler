@@ -28,19 +28,30 @@ class Hero:
         self.armors = []
         self.starting_health = 100
         self.current_health = current_health
-        
+
+    def add_ability(self, ability):
+        self.abilities.append(ability)
+
+#
+# if __name__ == "__main__":
+#     ability = Ability("Debugging Ability", 20)
+#     print(ability.name)
+#     print(ability.attack())
+#
+# if __name__ == "__main__":
+#     armor = Armor("Shield", 12)
+#     print(armor.name)
+#     print(armor.block())
+#
+# if __name__ == "__main__":
+#     hero = Hero("Grace Hopper", 200)
+#     print(hero.name)
+#     print(hero.current_health)
 
 if __name__ == "__main__":
-    ability = Ability("Debugging Ability", 20)
-    print(ability.name)
-    print(ability.attack())
-
-if __name__ == "__main__":
-    armor = Armor("Shield", 12)
-    print(armor.name)
-    print(armor.block())
-
-if __name__ == "__main__":
+    ability = Ability("Great Debugging", 50)
+    another_ability = Ability("Flying", 70)
     hero = Hero("Grace Hopper", 200)
-    print(hero.name)
-    print(hero.current_health)
+    hero.add_ability(ability)
+    hero.add_ability(another_ability)
+    print(hero.abilities)
