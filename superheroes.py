@@ -23,16 +23,27 @@ class Armor:
 
 class Hero:
     def __init__(self, name, current_health):
-        self.name = name
-        self.abilities = list()
-        self.armors = list()
-        self.starting_health = 100
-        self.current_health = current_health
+         '''Instance properties:
+           abilities: List
+           armors: List
+           name: String
+           starting_health: Integer
+           current_health: Integer
+         '''
+         self.name = name
+         self.abilities = list()
+         self.armors = list()
+         self.starting_health = 100
+         self.current_health = current_health
 
     def add_ability(self, ability):
+        ''' Add ability to abilities list '''
         self.abilities.append(ability)
 
     def attack(self):
+        '''Calculate the total damage from all ability attacks.
+           return: total:Int
+        '''
         total = 0
 
         for ability in self.abilities:
@@ -40,6 +51,24 @@ class Hero:
 
         return total
 
+    def add_armor(self, armor):
+        ''' Add armor to self.armors
+            Armor: Armor Object
+        '''
+        self.armors.append(armor)
+
+    def defend(self, incoming_damage):
+        '''Runs `block` method on each armor.
+           Returns sum of all blocks
+        '''
+        total = 0
+        if not self.armors:
+            print("There are no armors")
+        else:
+            for armor in self.armors:
+                total += armor.block()
+
+            return total
 
 #
 # if __name__ == "__main__":
@@ -68,7 +97,14 @@ class Hero:
 if __name__ == "__main__":
     ability = Ability("Great Debugging", 50)
     another_ability = Ability("Smarty Pants", 90)
+
     hero = Hero("Grace Hopper", 200)
+
+    shield = Armor("Shield", 50)
+
     hero.add_ability(ability)
     hero.add_ability(another_ability)
-    print(hero.attack())
+    hero.add_armor(shield)
+
+
+    print(hero.defend(40))
