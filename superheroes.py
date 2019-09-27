@@ -61,50 +61,30 @@ class Hero:
         '''Runs `block` method on each armor.
            Returns sum of all blocks
         '''
-        total = 0
+        total_block = 0
         if not self.armors:
             print("There are no armors")
         else:
             for armor in self.armors:
-                total += armor.block()
+                total_block += armor.block()
 
-            return total
+            return abs(total_block - incoming_damage)
 
-#
-# if __name__ == "__main__":
-#     ability = Ability("Debugging Ability", 20)
-#     print(ability.name)
-#     print(ability.attack())
-#
-# if __name__ == "__main__":
-#     armor = Armor("Shield", 12)
-#     print(armor.name)
-#     print(armor.block())
-#
-# if __name__ == "__main__":
-#     hero = Hero("Grace Hopper", 200)
-#     print(hero.name)
-#     print(hero.current_health)
-#
-# if __name__ == "__main__":
-#     ability = Ability("Great Debugging", 50)
-#     another_ability = Ability("Flying", 70)
-#     hero = Hero("Grace Hopper", 200)
-#     hero.add_ability(ability)
-#     hero.add_ability(another_ability)
-#     print(hero.abilities)
+    def take_damage(self, damage):
+        '''Updates self.current_health to reflect the damage minus the defense.
+        '''
+        self.current_health -= self.defend(damage)
+
+    def is_alive(self):
+        '''Return True or False depending on whether the hero is alive or not.
+        '''
+        
+
+
 
 if __name__ == "__main__":
-    ability = Ability("Great Debugging", 50)
-    another_ability = Ability("Smarty Pants", 90)
-
     hero = Hero("Grace Hopper", 200)
-
     shield = Armor("Shield", 50)
-
-    hero.add_ability(ability)
-    hero.add_ability(another_ability)
     hero.add_armor(shield)
-
-
-    print(hero.defend(40))
+    hero.take_damage(50)
+    print(hero.current_health)
