@@ -68,7 +68,7 @@ class Hero:
             for armor in self.armors:
                 total_block += armor.block()
 
-            return abs(total_block - incoming_damage)
+        return abs(total_block - incoming_damage)
 
     def take_damage(self, damage):
         '''Updates self.current_health to reflect the damage minus the defense.
@@ -83,12 +83,34 @@ class Hero:
         else:
             return False
 
+    def fight(self, opponent):
+        ''' Current Hero will take turns fighting the opponent hero passed in.
+        '''
+        if not self.abilities and not opponent.abilities:
+            print("Draw")
+
+        while self.is_alive() and opponent.is_alive():
+            self.take_damage(opponent.attack())
+            opponent.take_damage(self.attack())
+
+        if self.is_alive():
+            print(f"{self.name} won!")
+        else:
+            print(f"{opponent.name} won!")
 
 if __name__ == "__main__":
-    hero = Hero("Grace Hopper", 200)
+    hero1 = Hero("Wonder Woman", 200)
+    hero2 = Hero("Dumbledore", 200)
     shield = Armor("Shield", 50)
-    hero.add_armor(shield)
-    hero.take_damage(150)
-    print(hero.is_alive())
-    hero.take_damage(15000)
-    print(hero.is_alive())
+    suit = Armor("Suit", 30)
+    hero1.add_armor(suit)
+    hero2.add_armor(shield)
+    ability1 = Ability("Super Speed", 300)
+    ability2 = Ability("Super Eyes", 130)
+    ability3 = Ability("Wizard Wand", 80)
+    ability4 = Ability("Wizard Beard", 20)
+    hero1.add_ability(ability1)
+    hero1.add_ability(ability2)
+    hero2.add_ability(ability3)
+    hero2.add_ability(ability4)
+    hero1.fight(hero2)
