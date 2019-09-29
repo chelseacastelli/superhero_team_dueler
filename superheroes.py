@@ -10,7 +10,6 @@ class Ability:
         ''' Return a value between 0 and the initialized max_damage strength.'''
         return random.randint(0, self.max_damage)
 
-
 class Armor:
     def __init__(self, name, max_block):
         self.name = name
@@ -98,19 +97,41 @@ class Hero:
         else:
             print(f"{opponent.name} won!")
 
-if __name__ == "__main__":
-    hero1 = Hero("Wonder Woman", 200)
-    hero2 = Hero("Dumbledore", 200)
-    shield = Armor("Shield", 50)
-    suit = Armor("Suit", 30)
-    hero1.add_armor(suit)
-    hero2.add_armor(shield)
-    ability1 = Ability("Super Speed", 300)
-    ability2 = Ability("Super Eyes", 130)
-    ability3 = Ability("Wizard Wand", 80)
-    ability4 = Ability("Wizard Beard", 20)
-    hero1.add_ability(ability1)
-    hero1.add_ability(ability2)
-    hero2.add_ability(ability3)
-    hero2.add_ability(ability4)
-    hero1.fight(hero2)
+
+class Weapon(Ability):
+    def attack(self):
+        """  This method returns a random value
+        between one half to the full attack power of the weapon.
+        """
+        return random.randint(self.max_damage//2, self.max_damage)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# if __name__ == "__main__":
+#     hero1 = Hero("Wonder Woman", 200)
+#     hero2 = Hero("Dumbledore", 200)
+#     shield = Armor("Shield", 50)
+#     suit = Armor("Suit", 30)
+#     hero1.add_armor(suit)
+#     hero2.add_armor(shield)
+#     ability1 = Ability("Super Speed", 300)
+#     ability2 = Ability("Super Eyes", 130)
+#     ability3 = Ability("Wizard Wand", 80)
+#     ability4 = Ability("Wizard Beard", 20)
+#     hero1.add_ability(ability1)
+#     hero1.add_ability(ability2)
+#     hero2.add_ability(ability3)
+#     hero2.add_ability(ability4)
+#     hero1.fight(hero2)
