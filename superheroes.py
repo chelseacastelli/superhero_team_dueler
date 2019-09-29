@@ -105,18 +105,21 @@ class Weapon(Ability):
         """
         return random.randint(self.max_damage//2, self.max_damage)
 
+class Team(Hero):
+    def __init__(self, name):
+        ''' Initialize your team with its team name
+        '''
+        self.name = name
+        self.heroes = list()
 
+    def remove_hero(self, name):
+         '''Remove hero from heroes list.
+        If Hero isn't found return 0.
+        '''
+        if name not in self.heroes:
+            return 0
 
-
-
-
-
-
-
-
-
-
-
+        self.heroes.remove(name)
 
 
 # if __name__ == "__main__":
