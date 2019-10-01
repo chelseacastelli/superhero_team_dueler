@@ -52,7 +52,7 @@ class Hero:
 
         return total
 
-    def add_kil(self, num_kills):
+    def add_kills(self, num_kills):
         ''' Update kills with num_kills'''
         self.kills += num_kills
 
@@ -87,7 +87,7 @@ class Hero:
     def is_alive(self):
         '''Return True or False depending on whether the hero is alive or not.
         '''
-        return self.current_health > 0
+        return int(self.current_health) > 0
 
     def fight(self, opponent):
         ''' Current Hero will take turns fighting the opponent hero passed in.
@@ -100,13 +100,139 @@ class Hero:
             opponent.take_damage(self.attack())
 
         if self.is_alive():
-            opponent.deaths += 1
-            self.kills += 1
+            opponent.add_deaths(1)
+            self.add_kills(1)
             print(f"{self.name} won!")
         else:
-            opponent.kills += 1
-            self.deaths += 1
+            opponent.add_kills(1)
+            self.add_deaths(1)
             print(f"{opponent.name} won!")
+
+    def add_weapon(self, weapon):
+        '''Add weapon to self.abilities'''
+        self.abilities.append(weapon)
+
+    def add_armor(self, armor):
+        '''Add Armor to self.armors
+            armor: Armor Object
+        '''
+        self.armors.append(armor)
+
+class Arena:
+    def __init__(self):
+         '''Instantiate properties
+            team_one: None
+            team_two: None
+         '''
+         self.team_one = None
+         self.team_two = None
+
+    def create_ability(self):
+        '''Prompt for Ability information.
+           return Ability with values from user Input
+        '''
+        abil = input("Ability name: ")
+        dmg = int(input("Max damage: "))
+        return Ability(abil, dmg)
+
+    def create_weapon(self):
+        '''Prompt user for Weapon information
+           return Weapon with values from user input.
+        '''
+        weap = input("Weapon name: ")
+        dmg = int(input("Max damage: "))
+        return Weapon(weap, dmg)
+
+    def create_armor(self):
+        '''Prompt user for Armor information
+           return Armor with values from user input.
+        '''
+        arm = input("Armor name: ")
+        block = int(input("Max block: "))
+        return Weapon(arm, block)
+
+    def create_hero(self):
+        '''Prompt user for Hero information
+           return Hero with values from user input.
+        '''
+        hero_name = input("Hero name: ")
+        health = input("Health: ")
+        hero = Hero(hero_name, health)
+
+        abilities = input("Add ability? (y/n) ")
+        if abilities.lower() == 'y':
+            while True:
+                ability = self.create_ability()
+                hero.add_ability(ability)
+                another = input("Another ability? (y/n) ")
+                if another.lower() != 'y':
+                    break
+
+        weapons = input("Add weapon? (y/n) ")
+        if weapons.lower() == 'y':
+            while True:
+                weapon = self.create_weapon()
+                hero.add_weapon(weapon)
+                another = input("Another weapon? (y/n) ")
+                if another.lower() != 'y':
+                    break
+
+        armors = input("Add armor? (y/n) ")
+        if armors.lower() == 'y':
+            while True:
+                armor = self.create_armor()
+                hero.add_armor(armor)
+                another = input("Another armor? (y/n) ")
+                if another.lower() != 'y':
+                    break
+
+        return hero
+
+    def build_team_one(self):
+        '''Prompt the user to build team_one '''
+        team_name = input("Team name: ")
+        number_of_heroes = input("How many heroes? ")
+        self.team_one = Team(team_name)
+
+        for _ in range(int(number_of_heroes)):
+            hero = self.create_hero()
+            self.team_one.add_hero(hero)
+
+    def build_team_two(self):
+        '''Prompt the user to build team_two '''
+        team_name = input("Team name: ")
+        number_of_heroes = input("How many heroes? ")
+        self.team_two = Team(team_name)
+
+        for _ in range(int(number_of_heroes)):
+            hero = self.create_hero()
+            self.team_two.add_hero(hero)
+
+    def team_battle(self):
+        '''Battle team_one and team_two together.'''
+        self.team_one.attack(self.team_two)
+
+    def show_stats(self):
+        '''Prints team statistics to terminal.'''
+        team_one_stats = self.team_one.stats()
+        team_two_stats = self.team_two.stats()
+
+        if team_one_stats > team_two_stats:
+            print(f"{self.team_one.name} wins!")
+            print("Still alive:\n")
+            for hero in self.team_one.heroes:
+                print(f"{hero.name}")
+        elif team_one_stats < team_two_stats:
+            print(f"{self.team_two.name} wins!")
+            print("Still alive:\n")
+            for hero in self.team_two.heroes:
+                print(f"{hero.name}")
+        else:
+            print("Draw")
+
+        print(f"{self.team_one.name}'s average kill/death rate: {team_one_stats}")
+        print(f"{self.team_two.name}'s average kill/death rate: {team_two_stats}")
+
 
 class Weapon(Ability):
     def attack(self):
@@ -158,5 +284,49 @@ class Team(Hero):
 
     def stats(self):
         '''Print team statistics'''
+        kd_ratio = 0
+        total = 0
         for hero in self.heroes:
-            print(f"{hero.kills}:{hero.deaths}")
+            if hero.deaths == 0:
+                return self.kills
+            else:
+                kd_ratio = self.kills // self.deaths
+                total += kd_ratio
+
+        return total
+
+
+
+if __name__ == "__main__":
+    arena = Arena()
+    arena.build_team_one()
+    arena.build_team_two()
+    arena.team_battle()
+    arena.show_stats()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
