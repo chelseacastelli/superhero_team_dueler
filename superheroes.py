@@ -19,9 +19,8 @@ class Armor:
         ''' Return a random value between 0 and the initialized max_block strength. '''
         return random.randint(0, self.max_block)
 
-
 class Hero:
-    def __init__(self, name, current_health):
+    def __init__(self, name, current_health=100):
          '''Instance properties:
            abilities: List
            armors: List
@@ -32,8 +31,11 @@ class Hero:
          self.name = name
          self.abilities = list()
          self.armors = list()
-         self.starting_health = 100
+         self.starting_health = current_health
          self.current_health = current_health
+         self.deaths = 0
+         self.kills = 0
+
 
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
@@ -50,13 +52,21 @@ class Hero:
 
         return total
 
+    def add_kil(self, num_kills):
+        ''' Update kills with num_kills'''
+        self.kills += num_kills
+
+    def add_deaths(self, num_deaths):
+        ''' Update deaths with num_deaths'''
+        self.deaths += num_deaths
+
     def add_armor(self, armor):
         ''' Add armor to self.armors
             Armor: Armor Object
         '''
         self.armors.append(armor)
 
-    def defend(self, incoming_damage):
+    def defend(self, incoming_damage=0):
         '''Runs `block` method on each armor.
            Returns sum of all blocks
         '''
@@ -77,10 +87,7 @@ class Hero:
     def is_alive(self):
         '''Return True or False depending on whether the hero is alive or not.
         '''
-        if self.current_health > 0:
-            return True
-        else:
-            return False
+        return self.current_health > 0
 
     def fight(self, opponent):
         ''' Current Hero will take turns fighting the opponent hero passed in.
@@ -93,10 +100,13 @@ class Hero:
             opponent.take_damage(self.attack())
 
         if self.is_alive():
+            opponent.deaths += 1
+            self.kills += 1
             print(f"{self.name} won!")
         else:
+            opponent.kills += 1
+            self.deaths += 1
             print(f"{opponent.name} won!")
-
 
 class Weapon(Ability):
     def attack(self):
@@ -127,3 +137,26 @@ class Team(Hero):
     def add_hero(self, hero):
         '''Add Hero object to self.heroes.'''
         self.heroes.append(hero)
+
+    def attack(self, other_team):
+        ''' Battle each team against each other.'''
+        while self.heroes_alive() and other_team.heroes_alive():
+            hero1 = random.choice(self.heroes)
+            hero2 = random.choice(other_team.heroes)
+            hero1.fight(hero2)
+
+    def heroes_alive(self):
+        for hero in self.heroes:
+            if hero.is_alive():
+                return True
+        return False
+
+    def revive_heroes(self):
+        ''' Reset all heroes health to starting_health'''
+        for hero in self.heroes:
+            hero.current_health = hero.starting_health
+
+    def stats(self):
+        '''Print team statistics'''
+        for hero in self.heroes:
+            print(f"{hero.kills}:{hero.deaths}")
