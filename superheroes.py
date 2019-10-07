@@ -149,14 +149,14 @@ class Arena:
         '''
         arm = input("Armor name: ")
         block = int(input("Max block: "))
-        return Weapon(arm, block)
+        return Armor(arm, block)
 
     def create_hero(self):
         '''Prompt user for Hero information
            return Hero with values from user input.
         '''
         hero_name = input("Hero name: ")
-        health = input("Health: ")
+        health = int(input("Health: "))
         hero = Hero(hero_name, health)
 
         abilities = input("Add ability? (y/n) ")
@@ -288,9 +288,9 @@ class Team(Hero):
         total = 0
         for hero in self.heroes:
             if hero.deaths == 0:
-                return self.kills
+                return hero.kills
             else:
-                kd_ratio = self.kills // self.deaths
+                kd_ratio = hero.kills // hero.deaths
                 total += kd_ratio
 
         return total
